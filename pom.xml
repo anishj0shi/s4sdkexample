@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>mkt-extension - Root</name>
+    <description>mkt-extension - Root</description>
+
+    <groupId>com.sdk.sample.mkt</groupId>
+    <artifactId>mkt-extension</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>1.8</java.version>
+
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.testSource>${java.version}</maven.compiler.testSource>
+        <maven.compiler.testTarget>${java.version}</maven.compiler.testTarget>
+
+        <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
+        <s4hana.sdk.version>2.0.0</s4hana.sdk.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.0.2.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sap.cloud.s4hana</groupId>
+                <artifactId>sdk-bom</artifactId>
+                <version>${s4hana.sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>application</module>
+        <module>unit-tests</module>
+        <module>integration-tests</module>
+    </modules>
+
+    <build>
+        
+        <pluginManagement>
+            <plugins>
+                
+                <plugin>
+                    <groupId>com.sap.cloud.s4hana.datamodel</groupId>
+                    <artifactId>odata-generator-maven-plugin</artifactId>
+                    <version>${s4hana.sdk.version}</version>
+                    <executions>
+                        
+                        <execution>
+                            <id>generate-consumption</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                        
+                    </executions>
+                    <configuration>
+                        <inputDirectory>${project.basedir}/edmx</inputDirectory>
+                        <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                        <deleteOutputDirectory>false</deleteOutputDirectory>
+                        <packageName>com.s4sdkexample.mkt.payloads</packageName>
+                        <nameSource>NAME</nameSource>
+                    </configuration>
+                </plugin>
+                
+                <plugin>
+                    <groupId>net.revelc.code</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                </plugin>
+                
+            </plugins>
+            
+        </pluginManagement>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <executions>
+                    <execution>
+                        <id>S/4HANA Cloud SDK Project Structure Checks</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.3.9</version>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <version>${java.version}</version>
+                                </requireJavaVersion>
+                                <reactorModuleConvergence />
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

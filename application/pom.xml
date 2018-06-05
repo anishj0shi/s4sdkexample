@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>mkt-extension - Application</name>
+	<description>mkt-extension - Application</description>
+
+	<artifactId>mkt-extension-application</artifactId>
+	<version>1.0-SNAPSHOT</version>
+
+	<parent>
+		<groupId>com.sdk.sample.mkt</groupId>
+		<artifactId>mkt-extension</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+		<!-- SDK dependencies -->
+		<dependency>
+			<groupId>com.sap.cloud.s4hana.cloudplatform</groupId>
+			<artifactId>scp-cf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sap.cloud.s4hana</groupId>
+			<artifactId>s4hana-all</artifactId>
+		</dependency>
+
+		<!-- Dependency injection -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+		</dependency>
+
+		<!-- Spring dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-actuator</artifactId>
+		</dependency>
+
+		<!-- logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- audit logging -->
+		<!-- <dependency> <groupId>com.sap.xs.auditlog</groupId> <artifactId>audit-java-client-api</artifactId> 
+			<scope>provided</scope> </dependency> <dependency> <groupId>com.sap.xs.auditlog</groupId> 
+			<artifactId>audit-java-client-impl</artifactId> <scope>provided</scope> </dependency> 
+			<dependency> <groupId>com.sap.xs.java</groupId> <artifactId>xs-env</artifactId> 
+			<scope>provided</scope> </dependency> -->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>generate</id>
+			<activation>
+				<property>
+					<name>generate-vdm</name>
+				</property>
+			</activation>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.sap.cloud.s4hana.datamodel</groupId>
+						<artifactId>odata-generator-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+
+		</profile>
+	</profiles>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.0.2.RELEASE</version>
+				<configuration>
+					<attach>false</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
