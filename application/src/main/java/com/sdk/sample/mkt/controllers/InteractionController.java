@@ -18,7 +18,7 @@ public class InteractionController {
 	@Autowired
 	MktInteractionSrvService interactionService;
 
-	@RequestMapping(path = "/create", method = RequestMethod.GET)
+	@RequestMapping(path = "/createInteraction", method = RequestMethod.GET)
 	public ResponseEntity<?> createInteraction() throws ODataException {
 
 		Interaction interaction = Interaction.builder().interactionType("OFFER_REDEMPTION")

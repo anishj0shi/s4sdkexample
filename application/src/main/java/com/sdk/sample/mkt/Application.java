@@ -8,7 +8,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.s4sdkexample.mkt.payloads.services.DefaultMktCouponSrvService;
 import com.s4sdkexample.mkt.payloads.services.DefaultMktInteractionSrvService;
+import com.s4sdkexample.mkt.payloads.services.MktCouponSrvService;
 import com.s4sdkexample.mkt.payloads.services.MktInteractionSrvService;
 
 @SpringBootApplication
@@ -25,7 +27,12 @@ public class Application extends SpringBootServletInitializer {
 	}
 
 	@Bean
-	public MktInteractionSrvService interactionService() {
+	public MktCouponSrvService couponService() {
+		return new DefaultMktCouponSrvService();
+	}
+	
+	@Bean
+	public MktInteractionSrvService interactionSrvService() {
 		return new DefaultMktInteractionSrvService();
 	}
 }
